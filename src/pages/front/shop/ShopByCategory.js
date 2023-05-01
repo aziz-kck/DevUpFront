@@ -323,7 +323,7 @@ export default function ShopByCategory() {
                                         {product?.inStock === false && <span className="badge bg-danger">Out of stock</span>}
                                     </div>
                                     <a href="shop-single.html">
-                                        {/* img */}<img src="../assets/images/products/product-img-1.jpg" alt="Grocery Ecommerce Template" className="mb-3 img-fluid" /></a>
+                                        {/* img */}<img src={`http://localhost:5002/productUploads/${product.image}`} alt="Grocery Ecommerce Template" className="mb-3 img-fluid" /></a>
                                     {/* action btn */}
                                     <div className="card-product-action">
                                         <a href="#!" className="btn-action" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i className="bi bi-eye" data-bs-toggle="tooltip" data-bs-html="true" title="Quick View" /></a>
