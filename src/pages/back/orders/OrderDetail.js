@@ -98,9 +98,11 @@ const OrderDetailBack = () => {
               </div>
               {/* button */}
               <div>
-                <a className="btn btn-primary">
-                  <Link to={`/dashboard/orders/`}>Back to all orders</Link>
-                </a>
+                <Link to={`/dashboard/orders/`}>
+                  <a className="btn btn-primary">
+                    Back to all orders
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
