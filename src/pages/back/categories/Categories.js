@@ -102,16 +102,9 @@ const Categories = (props) => {
                 <div className="card-body p-0">
                   {/* table */}
                   <div className="table-responsive ">
-                    <table className="table table-centered table-hover mb-0 text-nowrap table-borderless table-with-checkbox">
+                    <table className="table table-centered table-hover mb-0 table-borderless">
                       <thead className="bg-light">
                         <tr>
-                          <th>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" defaultValue id="checkAll" />
-                              <label className="form-check-label" htmlFor="checkAll">
-                              </label>
-                            </div>
-                          </th>
                           <th>Icon</th>
                           <th> Name</th>
                           <th>action</th>
@@ -121,13 +114,6 @@ const Categories = (props) => {
                         {allCategories?.slice(startIndex,endIndex).map((category, index) => {
                           return (
                             <tr key={index}>
-                              <td>
-                                <div className="form-check">
-                                  <input className="form-check-input" type="checkbox" defaultValue id="categoryOne" />
-                                  <label className="form-check-label" htmlFor="categoryOne">
-                                  </label>
-                                </div>
-                              </td>
                               <td>
                                 <a href="#!"> <img src={`http://localhost:5002/categoryUploads/${category.imagePath}`} alt="" className="icon-shape icon-sm" /></a>
                               </td>

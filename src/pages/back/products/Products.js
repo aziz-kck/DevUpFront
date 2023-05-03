@@ -1,3 +1,4 @@
+import "./products.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -143,34 +144,29 @@ const Products = (props) => {
                 <div className="card-body p-0">
                   {/* table */}
                   <div className="table-responsive">
-                    <table className="table table-centered table-hover text-nowrap table-borderless mb-0 table-with-checkbox">
+                    <table className="table table-centered table-hover table-borderless mb-0 table-with-checkbox">
                       <thead className="bg-light">
                         <tr>
-                          <th>
-                            <div className="form-check">
-                              <input
-                                className="form-check-input"
-                                type="checkbox"
-                                defaultValue
-                                id="checkAll"
-                              />
-                              <label
-                                className="form-check-label"
-                                htmlFor="checkAll"
-                              ></label>
-                            </div>
-                          </th>
                           <th>Image</th>
-                          <th>Code</th>
-                          <th>Product Name</th>
-                          <th>Category</th>
-                          <th>Stock</th>
-                          <th>Quantity</th>
-                          <th>Price</th>
-                          <th>Reduction Price</th>
-                          <th>Create at</th>
+                          <th className="column disposable">Code</th>
+                          <th className="column">Product Name</th>
+                          <th className="column disposable disposable2">
+                            Category
+                          </th>
+                          <th className="column disposable">Stock</th>
+                          <th className="column disposable disposable2">
+                            Quantity
+                          </th>
+                          <th className="column disposable disposable2">
+                            Price
+                          </th>
+                          <th className="column disposable disposable2">
+                            Reduction Price
+                          </th>
+                          <th className="column disposable disposable2">
+                            Create at
+                          </th>
                           <th>Action</th>
-                          <th />
                         </tr>
                       </thead>
                       <tbody>
@@ -179,21 +175,7 @@ const Products = (props) => {
                           .map((product, index) => {
                             return (
                               <tr key={index}>
-                                <td>
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      defaultValue
-                                      id="productOne"
-                                    />
-                                    <label
-                                      className="form-check-label"
-                                      htmlFor="productOne"
-                                    ></label>
-                                  </div>
-                                </td>
-                                <td>
+                                <td className="column">
                                   <a href="#!">
                                     <img
                                       src={`http://localhost:5002/productUploads/${product.image}`}
@@ -202,46 +184,51 @@ const Products = (props) => {
                                     />
                                   </a>
                                 </td>
-                                <td>#{product.code}</td>
-                                <td>
+                                <td className="column disposable">
+                                  #{product.code}
+                                </td>
+                                <td className="column  ">
                                   <a href="#" className="text-reset">
                                     {product.name}
                                   </a>
                                 </td>
 
-                                <td>{product.category.label}</td>
-                                <td style={{ textAlign: "center" }}>
-                                  <a type="button" 
-                                  onClick={() =>
+                                <td className="column disposable disposable2">
+                                  {product.category.label}
+                                </td>
+                                <td className="column disposable">
+                                  <a
+                                    type="button"
+                                    onClick={() =>
                                       navigate(
                                         `/dashboard/stock/${product._id}`
                                       )
-                                    }><span
-                                    className={`badge 
+                                    }
+                                  >
+                                    <span
+                                      className={`badge 
                                     ${
                                       product?.inStock
                                         ? "bg-light-primary text-dark-primary"
                                         : "bg-light-danger text-dark-danger"
                                     }`}
-                                    
-                                  >
-                                    
-                                    {product?.inStock
-                                      ? "In Stock"
-                                      : "Out of Stock"}
-                                  </span>
+                                    >
+                                      {product?.inStock
+                                        ? "In Stock"
+                                        : "Out of Stock"}
+                                    </span>
                                   </a>
                                 </td>
-                                <td style={{ textAlign: "center" }}>
+                                <td className="column disposable disposable2">
                                   {product.quantity}
                                 </td>
-                                <td style={{ textAlign: "center" }}>
+                                <td className="column disposable disposable2">
                                   {product.price}
                                 </td>
-                                <td style={{ textAlign: "center" }}>
+                                <td className="column disposable disposable2">
                                   {product.reduction}
                                 </td>
-                                <td style={{ textAlign: "center" }}>
+                                <td className="column disposable disposable2">
                                   {/*
                                 {new Date(product.addedDate).toLocaleString()}
                                 */}
@@ -249,9 +236,91 @@ const Products = (props) => {
                                     product.addedDate
                                   ).toLocaleDateString()}
                                 </td>
-                                <td>
-                                  <div
-                                    className="dropdown" >
+                                <td
+                                  className="column "
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    lineHeight: "3.1rem",
+                                  }}
+                                >
+                                  <div className="dropdown eye-field2">
+                                    <a
+                                      href="#"
+                                      className="text-reset"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="feather-icon icon-eye fs-5" />
+                                    </a>
+                                    <ul className="dropdown-menu dropdownForcedAttributes" >
+                                      <li className="line eye-field">
+                                        <a className="dropdown-item">
+                                          <span className="">Code :</span>#
+                                          {product.code}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">Category :</span>
+                                          {product.category.label}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field">
+                                        <a
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            navigate(
+                                              `/dashboard/stock/${product._id}`
+                                            )
+                                          }
+                                        >
+                                          <span className="">Stock :</span>
+                                          <span
+                                            className={`badge 
+                                            ${
+                                              product?.inStock
+                                                ? "bg-light-primary text-dark-primary"
+                                                : "bg-light-danger text-dark-danger"
+                                            }`}
+                                          >
+                                            {product?.inStock
+                                              ? "In Stock"
+                                              : "Out of Stock"}
+                                          </span>
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">Quantity :</span>
+                                          {product.quantity}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">Price :</span>
+                                          {product.price}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">
+                                            Reduction Price :
+                                          </span>
+                                          {product.reduction}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2" style={{borderBottom:"none"}}> 
+                                        <a className="dropdown-item">
+                                          <span className="">Created at :</span>
+                                          {new Date(
+                                            product.addedDate
+                                          ).toLocaleDateString()}
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <div className="dropdown">
                                     <a
                                       href="#"
                                       className="text-reset"
@@ -277,7 +346,6 @@ const Products = (props) => {
                                             editProduct(product._id)
                                           }
                                           className="dropdown-item"
-                                          
                                         >
                                           <i className="bi bi-pencil-square me-3 " />
                                           Edit
