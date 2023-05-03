@@ -15,6 +15,12 @@ const Coupons = (props) => {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  function handleItemsPerPageChange(event) {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  }
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -145,7 +151,6 @@ const Coupons = (props) => {
                                     {coupon.discount}
                                   </a>
                                 </td>
-
                                 <td className="column disposable disposable2">
                                   {coupon.maxUses}
                                 </td>
@@ -159,7 +164,9 @@ const Coupons = (props) => {
                                     coupon.expiresAt
                                   ).toLocaleDateString()}
                                 </td>
+
                                 <td className="column disposable disposable2">
+
                                   {new Date(
                                     coupon.updatedAt
                                   ).toLocaleDateString()}
@@ -264,7 +271,22 @@ const Coupons = (props) => {
                               <div>
                                 Showing{" "}
                                 {Math.min(itemsPerPage, allCoupons.length)} of{" "}
-                                {allCoupons.length} Coupons
+                                {allCoupons.length} products
+                              </div>
+                              <div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <label htmlFor="items-per-page">
+                                    Items per page:
+                                  </label>
+
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    id="items-per-page"
+                                    value={itemsPerPage}
+                                    onChange={handleItemsPerPageChange}
+                                  />
+                                </div>
                               </div>
                               <div>
                                 <nav aria-label="Page navigation">

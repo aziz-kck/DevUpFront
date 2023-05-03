@@ -12,9 +12,30 @@ const Products = (props) => {
   const [searchQueryByProductname, setSearchQueryByProductname] = useState("");
   const [searchQueryByStock, setSearchQueryByStock] = useState("");
   const [stock, setStock] = useState("");
+  //search 
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  //sorting
+  const [sortOrder, setSortOrder] = useState({
+    code: "asc",
+    name: "asc",
+    category: "asc"
+  });
+  const handleSort = (field) => {
+    setSortOrder((prevSortOrder) => ({
+      ...prevSortOrder,
+      [field]: prevSortOrder[field] === "asc" ? "desc" : "asc"
+    }));
+  };
+  function handleItemsPerPageChange(event) {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  }
+
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -82,7 +103,44 @@ const Products = (props) => {
       })
       .catch((err) => console.log(err));
   };
+  const sortedProducts = [...allProducts].sort((a, b) => {
+    let codeComparison = 0;
+    if (typeof a.code === "string" && typeof b.code === "string") {
+      codeComparison = a.code.localeCompare(b.code);
+    } else {
+      codeComparison = a.code < b.code ? -1 : 1;
+    }
+  
+    let nameComparison = 0;
+    if (typeof a.name === "string" && typeof b.name === "string") {
+      nameComparison = a.name.localeCompare(b.name);
+    } else {
+      nameComparison = a.name < b.name ? -1 : 1;
+    }
+  
+    if (sortOrder.code === "asc") {
+      if (codeComparison !== 0) {
+        return codeComparison;
+      } else {
+        return nameComparison;
+      }
+    } else {
+      if (codeComparison !== 0) {
+        return -codeComparison;
+      } else {
+        return -nameComparison;
+      }
+    }
+  });
+  
 
+
+
+  
+  
+  
+  
+  
   return (
     <>
       <main className="main-content-wrapper">
@@ -117,11 +175,11 @@ const Products = (props) => {
                         <input
                           className="form-control"
                           type="search"
-                          placeholder="Search Customers"
+                          placeholder="Search Products"
                           aria-label="Search"
-                          value={searchQueryByProductname}
+                          value={searchQuery}
                           onChange={(e) =>
-                            setSearchQueryByProductname(e.target.value)
+                            setSearchQuery(e.target.value)
                           }
                         />
                       </form>
@@ -148,11 +206,16 @@ const Products = (props) => {
                       <thead className="bg-light">
                         <tr>
                           <th>Image</th>
-                          <th className="column disposable">Code</th>
-                          <th className="column">Product Name</th>
-                          <th className="column disposable disposable2">
-                            Category
-                          </th>
+                          <th onClick={() => handleSort("code")} className="column disposable">
+  Code {sortOrder.code === "asc" ? <i className="fa fa-sort-alpha-down"></i> : <i className="fa fa-sort-alpha-up"></i>}
+</th>
+<th onClick={() => handleSort("name")} className="column">
+Product Name {sortOrder.name === "asc" ? <i className="fa fa-sort-alpha-down"></i> : <i className="fa fa-sort-alpha-up"></i>}
+</th>
+<th onClick={() => handleSort("category")} className="column disposable disposable2">
+  Category {sortOrder.category === "asc" ? <i className="fa fa-sort-alpha-down"></i> : <i className="fa fa-sort-alpha-up"></i>}
+</th>                       
+
                           <th className="column disposable">Stock</th>
                           <th className="column disposable disposable2">
                             Quantity
@@ -170,8 +233,13 @@ const Products = (props) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allProducts
-                          ?.slice(startIndex, endIndex)
+                        {sortedProducts
+                          ?.filter((product) =>
+                          Object.values(product)
+                            .join('')
+                            .toLowerCase()
+                            .includes(searchQuery)
+                        ).slice(startIndex, endIndex)
                           .map((product, index) => {
                             return (
                               <tr key={index}>
@@ -192,7 +260,6 @@ const Products = (props) => {
                                     {product.name}
                                   </a>
                                 </td>
-
                                 <td className="column disposable disposable2">
                                   {product.category.label}
                                 </td>
@@ -366,6 +433,21 @@ const Products = (props) => {
                                 Showing{" "}
                                 {Math.min(itemsPerPage, allProducts.length)} of{" "}
                                 {allProducts.length} products
+                              </div>
+                              <div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <label htmlFor="items-per-page">
+                                    Items per page : 
+                                  </label>
+
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    id="items-per-page"
+                                    value={itemsPerPage}
+                                    onChange={handleItemsPerPageChange}
+                                  />
+                                </div>
                               </div>
                               <div>
                                 <nav aria-label="Page navigation">

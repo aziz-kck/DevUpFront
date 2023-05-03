@@ -8,8 +8,15 @@ import { useSelector } from "react-redux";
 const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
   const { user: currentUser } = useSelector((state) => state.auth);
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  function handleItemsPerPageChange(event) {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  }
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   useEffect(() => {
@@ -66,6 +73,7 @@ const Orders = () => {
                         .map((order, index) => {
                           return (
                             <tr key={index}>
+
                               <td className="column">{currentUser.username}</td>
 
                               <td className="column disposable">
@@ -146,64 +154,102 @@ const Orders = () => {
                           );
                         })}
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan="10">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                              Showing {Math.min(itemsPerPage, allOrders.length)}{" "}
+                              of {allOrders.length} products
+                            </div>
+                            <div>
+                              <div className="d-flex justify-content-between align-items-center">
+                                <label htmlFor="items-per-page">
+                                  Items per page:
+                                </label>
+
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  id="items-per-page"
+                                  value={itemsPerPage}
+                                  onChange={handleItemsPerPageChange}
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <nav aria-label="Page navigation">
+                                <ul className="pagination">
+                                  {startIndex > 1 && (
+                                    <li className="page-item ">
+                                      <a
+                                        className="page-link "
+                                        onClick={() =>
+                                          setCurrentPage(currentPage - 1)
+                                        }
+                                      >
+                                        Previous
+                                      </a>
+                                    </li>
+                                  )}
+                                  {currentPage === 1 && (
+                                    <li className="page-item disabled">
+                                      <a className="page-link ">Previous</a>
+                                    </li>
+                                  )}
+                                  {Array.from(
+                                    {
+                                      length: Math.ceil(
+                                        allOrders.length / itemsPerPage
+                                      ),
+                                    },
+                                    (_, i) => (
+                                      <li
+                                        key={i}
+                                        className={`page-item ${
+                                          i + 1 === currentPage ? "active" : ""
+                                        }`}
+                                        onClick={() => setCurrentPage(i + 1)}
+                                      >
+                                        <span className="page-link">
+                                          {i + 1}
+                                        </span>
+                                      </li>
+                                    )
+                                  )}
+                                  {endIndex < allOrders.length && (
+                                    <li className="page-item">
+                                      <a
+                                        className="page-link"
+                                        onClick={() =>
+                                          setCurrentPage(currentPage + 1)
+                                        }
+                                      >
+                                        Next
+                                      </a>
+                                    </li>
+                                  )}
+                                  {endIndex >= allOrders.length && (
+                                    <li className="page-item disabled">
+                                      <a
+                                        className="page-link"
+                                        onClick={() =>
+                                          setCurrentPage(currentPage + 1)
+                                        }
+                                      >
+                                        Next
+                                      </a>
+                                    </li>
+                                  )}
+                                </ul>
+                              </nav>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
-              </div>
-              <div className="border-top d-md-flex justify-content-between align-items-center p-6">
-                <span>Orders: {allOrders.length}</span>
-                <nav aria-label="Page navigation">
-                  <ul className="pagination">
-                    {startIndex > 1 && (
-                      <li className="page-item ">
-                        <a
-                          className="page-link "
-                          onClick={() => setCurrentPage(currentPage - 1)}
-                        >
-                          Previous
-                        </a>
-                      </li>
-                    )}
-                    {currentPage === 1 && (
-                      <li className="page-item disabled">
-                        <a className="page-link ">Previous</a>
-                      </li>
-                    )}
-                    {Array.from(
-                      { length: Math.ceil(allOrders.length / itemsPerPage) },
-                      (_, i) => (
-                        <li
-                          key={i}
-                          className={`page-item ${
-                            i + 1 === currentPage ? "active" : ""
-                          }`}
-                          onClick={() => setCurrentPage(i + 1)}
-                        >
-                          <span className="page-link">{i + 1}</span>
-                        </li>
-                      )
-                    )}
-                    {endIndex < allOrders.length && (
-                      <li className="page-item">
-                        <a
-                          className="page-link"
-                          onClick={() => setCurrentPage(currentPage + 1)}
-                        >
-                          Next
-                        </a>
-                      </li>
-                    )}
-                    {endIndex >= allOrders.length && (
-                      <li className="page-item disabled">
-                        <a
-                          className="page-link"
-                          onClick={() => setCurrentPage(currentPage + 1)}
-                        >
-                          Next
-                        </a>
-                      </li>
-                    )}
-                  </ul>
-                </nav>
               </div>
             </div>
           </div>
