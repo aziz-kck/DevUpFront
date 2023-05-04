@@ -1095,7 +1095,7 @@ function Home() {
                             <i className='bi bi-star-fill'></i>
                             <i className='bi bi-star-half'></i>
                           </small>{" "}
-                          <span className='text-muted small'>4.5(149)</span>
+                          <span className="text-muted small">{product.stars}({product.nbReviewers})</span>
                         </div>
 
                         <div className='d-flex justify-content-between align-items-center mt-3'>

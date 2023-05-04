@@ -10,9 +10,8 @@ const Coupons = (props) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const [allCoupons, setAllCoupons] = useState([]);
-  const [searchQueryByCouponCode, setSearchQueryByCouponCode] = useState("");
-  const [couponToDelete, setCouponToDelete] = useState(null);
-
+    //search 
+    const [searchQuery, setSearchQuery] = useState('');
   const [stock, setStock] = useState("");
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,18 +26,6 @@ const Coupons = (props) => {
   const endIndex = startIndex + itemsPerPage;
 
   useEffect(() => {
-    const searchObject = { name: searchQueryByCouponCode };
-    const sObject = { inStock: stock };
-    if (searchQueryByCouponCode?.length > 0) {
-      axios
-        .post("http://localhost:5000/orders/searchCouponByCode", {
-          code: searchObject.name,
-        })
-        .then((res) => {
-          setAllCoupons(res.data);
-        })
-        .catch((err) => console.log(err));
-    } else {
       axios
         .get("http://localhost:5000/orders/getAllCoupons")
         .then((res) => {
@@ -46,10 +33,9 @@ const Coupons = (props) => {
         })
         .catch((error) => {
           console.log(error);
-        });
-    }
-  }, [searchQueryByCouponCode, currentPage, itemsPerPage]);
-
+        });}
+   , [ currentPage, itemsPerPage]);
+      
   const editProduct = (id) => {
     if (id) {
       console.log(id);
@@ -119,9 +105,9 @@ const Coupons = (props) => {
                           type="search"
                           placeholder="Search Coupons"
                           aria-label="Search"
-                          value={searchQueryByCouponCode}
+                          value={searchQuery}
                           onChange={(e) =>
-                            setSearchQueryByCouponCode(e.target.value)
+                            setSearchQuery(e.target.value)
                           }
                         />
                       </form>
@@ -156,7 +142,12 @@ const Coupons = (props) => {
                       </thead>
                       <tbody>
                         {allCoupons
-                          ?.slice(startIndex, endIndex)
+                          ?.filter((coupon) =>
+                          Object.values(coupon)
+                            .join('')
+                            .toLowerCase()
+                            .includes(searchQuery)
+                        ).slice(startIndex, endIndex)
                           .map((coupon, index) => {
                             return (
                               <tr key={index}>
