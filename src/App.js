@@ -25,6 +25,7 @@ import OrderDetailBack from "./pages/back/orders/OrderDetail";
 import Coupons from "./pages/back/coupons/Coupons";
 import AddCoupon from "./pages/back/coupons/AddCoupon";
 import EditCoupon from "./pages/back/coupons/EditCoupon";
+import Payment from "./pages/front/orders/Payment";
 //import EditProduct from "./pages/back/products/EditProduct";
 
 
@@ -98,6 +99,7 @@ function App() {
         <Route exact path='/admin' element={<TemplateBack />} />
         <Route exact path='/signIn' element={<SignIn />} />
         <Route exact path='/order' element={<Order />} />
+        <Route exact path='/payment' element={<Payment />} />
 
         <Route
           exact

@@ -1067,9 +1067,10 @@ function Home() {
                           </div>
                           {/* Add to shop */}
                           <div>
-                            <span
-                              className="btn btn-primary btn-sm"
+                            <button
+                              className="btn btn-primary btn-sm" 
                               onClick={() => addProdcutToCart(product)}
+                              disabled={((distance % (1000 * 60 * 60)) / (1000 * 60)) < 0 || product?.inStock == "Out of Stock" ? true : false}
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -1087,7 +1088,7 @@ function Home() {
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                               </svg>{" "}
                               Add
-                            </span>
+                            </button>
                           </div>
                         </div>
                         <div class="d-flex justify-content-start text-center mt-3">
