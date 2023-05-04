@@ -1,18 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { Link } from "react-router-dom";
-import { refreshUser } from "../../actions/auth";
 
 function Navbar() {
   const { user: currentUser } = useSelector((state) => state.auth);
   const [allCategories, setAllCategories] = useState([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(refreshUser(currentUser?.id));
-
     axios.get("/products/cat").then((res) => {
       setAllCategories(res.data);
     });
@@ -225,7 +221,7 @@ function Navbar() {
                     {currentUser && (
                       <span className='position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success'>
                         {currentUser?.cart?.length}
-                        {/* <span className="">unread messages</span> */}
+                        <span className='visually-hidden'>unread messages</span>
                       </span>
                     )}
                   </a>
@@ -269,10 +265,11 @@ function Navbar() {
                       <small>{currentUser?.email}</small>
                     </div>
                     <ul className='list-unstyled px-2 py-3'>
-                      <Link to='/home'>
-                        <li>
-                          <a className='dropdown-item'>Home</a>
-                        </li>
+                    <Link to='/home'>
+                      <li>
+                        <a className='dropdown-item'>Home</a>
+                      </li>
+
                       </Link>
                       <li>
                         <a className='dropdown-item'>Profile</a>
@@ -327,22 +324,24 @@ function Navbar() {
                 return (
                   <li key={index}>
                     <Link
-                      to={`/shopByCategory/${category._id}`}
-                      reloadDocument={true}
-                    >
-                      <a className='dropdown-item'>
-                        <img
-                          className='mr-2'
-                          style={{
-                            width: "23px",
-                            height: "23px",
-                            marginRight: "4px",
-                          }}
-                          src={`http://localhost:5002/categoryUploads/${category.imagePath}`}
-                        ></img>
-                        {category.label}
-                      </a>
-                    </Link>
+                                  to={`/shopByCategory/${category._id}`}
+                                  reloadDocument={true}
+                                >
+                          <a
+                            className='dropdown-item'
+                          >
+                            <img
+                                        className='mr-2'
+                                        style={{
+                                          width: "23px",
+                                          height: "23px",
+                                          marginRight: "4px",
+                                        }}
+                                        src={`http://localhost:5002/categoryUploads/${category.imagePath}`}
+                                      ></img>
+                            {category.label}
+                          </a>
+                          </Link>
                   </li>
                 );
               })}
@@ -411,129 +410,66 @@ function Navbar() {
                 </button>
               </div>
             </div>
-
+            
             <div className='d-none d-lg-block'>
               <ul className='navbar-nav align-items-center '>
-                <Link to='/home'>
-                  <li className='nav-item dropdown'>
-                    <a
-                      className='nav-link'
-                      role='button'
-                      data-bs-toggle='dropdown'
-                      aria-expanded='false'
-                    >
-                      Home
-                    </a>
-                  </li>
+              <Link to='/home'>
+                <li className='nav-item dropdown'>
+                  <a
+                    className='nav-link'
+                     
+                    role='button'
+                    data-bs-toggle='dropdown'
+                    aria-expanded='false'
+                  >
+                    Home
+                  </a>
+                </li>
                 </Link>
+                <Link to='/ordersList'>
                 <li className='nav-item dropdown'>
                   <a
                     className='nav-link '
+                    
                     role='button'
                     data-bs-toggle='dropdown'
                     aria-expanded='false'
                   >
-                    Shop
+                    My orders
                   </a>
                 </li>
+                </Link>
+                <Link to='/settings'>
+
                 <li className='nav-item dropdown'>
                   <a
                     className='nav-link '
+                    
                     role='button'
                     data-bs-toggle='dropdown'
                     aria-expanded='false'
                   >
-                    Stores
+                    Settings
                   </a>
+                  
                 </li>
-                <li className='nav-item dropdown dropdown-fullwidth'>
-                  <a
-                    className='nav-link dropdown-toggle'
-                    href='#'
-                    role='button'
-                    data-bs-toggle='dropdown'
-                    aria-expanded='false'
-                  >
-                    Mega menu
-                  </a>
-                  <div className=' dropdown-menu pb-0'>
-                    <div className='row p-2 p-lg-4'>
-                      <div className='col-9'>
-                        <div className='row p-2 p-lg-4'>
-                          {allCategories.map((category, index) => {
-                            return (
-                              <div
-                                className='col-lg-3 col-6 mb-4 mb-lg-0'
-                                style={{ cursor: "pointer" }}
-                              >
-                                <Link
-                                  to={`/shopByCategory/${category._id}`}
-                                  reloadDocument={true}
-                                >
-                                  <a className='dropdown-item'>
-                                    <h6
-                                      className='text-primary ps-3'
-                                      style={{ fontSize: "1.1rem" }}
-                                    >
-                                      <img
-                                        className='mr-2'
-                                        style={{
-                                          width: "23px",
-                                          height: "23px",
-                                          marginRight: "4px",
-                                        }}
-                                        src={`http://localhost:5002/categoryUploads/${category.imagePath}`}
-                                      ></img>
-                                      {category.label}
-                                      <a
-                                        className='dropdown-item px-0'
-                                        style={{
-                                          whiteSpace: "pre-wrap",
-                                          lineHeight: "16px",
-                                          fontSize: "0.9rem",
-                                        }}
-                                      >
-                                        {category.description}
-                                      </a>
-                                    </h6>
-                                  </a>
-                                </Link>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                      <div className='col-lg-3 col-12 mb-4 mb-lg-0'>
-                        <div className='card border-0'>
-                          <img
-                            src='/assets/images/banner/menu-banner.jpg'
-                            alt='eCommerce HTML Template'
-                            className='img-fluid'
-                          />
-                          <div className='position-absolute ps-6 mt-8'>
-                            <h5 className=' mb-0 '>
-                              Dont miss this <br />
-                              offer today.
-                            </h5>
-                            <a href='#' className='btn btn-primary btn-sm mt-3'>
-                              Shop Now
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li className='nav-item dropdown'>
-                  <a
-                    className='nav-link '
-                    role='button'
-                    data-bs-toggle='dropdown'
-                    aria-expanded='false'
-                  >
-                    Pages
-                  </a>
-                </li>
+                </Link>
+                {!currentUser && (
+                      <>
+                        <li>
+                          <a className='dropdown-item' href='pages/signin.html'>
+                            Sign in
+                          </a>
+                        </li>
+                        <li>
+                          <a className='dropdown-item' href='pages/signup.html'>
+                            Signup
+                          </a>
+                        </li>
+                      </>
+                    )}
+                
+                {/*
                 <li className='nav-item dropdown'>
                   <a
                     className='nav-link dropdown-toggle'
@@ -559,7 +495,11 @@ function Navbar() {
                       </>
                     )}
                     <li className='dropdown-submenu dropend'>
-                      <a className='dropdown-item dropdown-list-group-item dropdown-toggle'>
+
+                      <a
+                        className='dropdown-item dropdown-list-group-item dropdown-toggle'
+                         
+                      >
                         My Account
                       </a>
                       <ul className='dropdown-menu'>
@@ -601,6 +541,7 @@ function Navbar() {
                     </li>
                   </ul>
                 </li>
+                */}
 
                 <li className='nav-item dropdown dropdown-flyout'>
                   <a
@@ -669,6 +610,7 @@ function Navbar() {
                 </li>
               </ul>
             </div>
+            
           </div>
         </div>
       </nav>

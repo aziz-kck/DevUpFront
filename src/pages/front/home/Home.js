@@ -50,11 +50,13 @@ function Home() {
   const [maxHeight, setMaxHeight] = useState("0px");
 
   var total = 0;
+
+
   useEffect(() => {
     dispatch(refreshUser(currentUser?.id));
     const searchObject = { name: searchQueryByProductname };
     if (searchQueryByProductname?.length > 0) {
-      console.log(searchObject);
+      //console.log(searchObject);
       axios
         .post(
           "http://localhost:5000/products/prod/searchProductByName",
@@ -77,16 +79,21 @@ function Home() {
     console.log(total);
   }, [searchQueryByProductname]);
 
+
   useEffect(() => {
     axios
-      .get("http://localhost:5000/products/expirationDate")
-      .then((res) => {
-        setExpirationProduct(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .get("http://localhost:5000/products/expirationDate")
+        .then((res) => {
+          setExpirationProduct(res.data);
+          //console.log(expirationProduct);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    
   });
+
+
 
   useEffect(() => {
     axios
@@ -116,7 +123,7 @@ function Home() {
 
   const confirmOrder = async () => {
     let errorMessage;
-    console.log(cart);
+    //console.log(cart);
     const orderInfo = {
       cart: cart,
       customer: currentUser.id,
@@ -124,7 +131,7 @@ function Home() {
       status: "New",
       couponCode: couponCode,
     };
-    console.log(orderInfo);
+    //console.log(orderInfo);
     axios
       .post("http://localhost:5000/orders/order", orderInfo)
       .then(function (response) {
@@ -142,7 +149,7 @@ function Home() {
           .catch((error) => {
             console.log(error);
           });
-        console.log(response);
+        //console.log(response);
       })
       .catch(function (error) {
         notify(error.response.data.message, toast, "error");
@@ -168,18 +175,19 @@ function Home() {
         console.log(error);
       });
   };
+  //console.log(currentUser);
   const removeProdcutFromCart = (removeProdcutFromCart) => {
-    console.log(removeProdcutFromCart);
+    //console.log(removeProdcutFromCart);
     const req = {
       email: currentUser?.email,
       id: removeProdcutFromCart._id,
     };
-    console.log(req);
+    //console.log(req);
     axios
       .put("http://localhost:5000/api/removeProdcutFromCart/", req)
       .then((res) => {
         setCall(!call);
-        console.log(removeProdcutFromCart.price);
+        //console.log(removeProdcutFromCart.price);
 
         setTotalAmount(total);
         dispatch(refreshUser(currentUser?.id));
@@ -194,7 +202,7 @@ function Home() {
       email: currentUser?.email,
       id: removeQuantityProductToCart,
     };
-    console.log(req);
+    //console.log(req);
     axios
       .put("http://localhost:5000/api/removeQuantityProductToCart/", req)
       .then((res) => {
@@ -209,7 +217,7 @@ function Home() {
       email: currentUser?.email,
       id: addQuantityProductToCart,
     };
-    console.log(req);
+    //console.log(req);
     axios
       .put("http://localhost:5000/api/addQuantityProductToCart/", req)
       .then((res) => {
@@ -385,8 +393,16 @@ function Home() {
       "fifth-comment": "Shop Now",
     },
   ];
+  let categories=[]
+  expirationProduct.map((e) => {
+    categories.push({
+      name: e.name,
+      src: e.image,
+    })
+  });
+   /* const categories = [
 
-  const categories = [
+   
     {
       name: "tea, coffee &amp drinks",
       src: "assets/images/category/category-tea-coffee-drinks.jpg",
@@ -439,7 +455,9 @@ function Home() {
       name: "ma9rouna",
       src: "assets/images/category/category-tea-coffee-drinks.jpg",
     },
-  ];
+    
+  ];*/
+
 
   //Slider settings for the intro
   const settings_intro = {
@@ -646,8 +664,10 @@ function Home() {
                 {error}
               </div>
             )}
-            <div className='d-flex justify-content-end mt-4'>
-              <button className='btn btn-primary' onClick={confirmOrder}>
+            <div className="d-flex justify-content-end mt-4">
+              
+              
+              <button className="btn btn-primary" onClick={confirmOrder}>
                 Confirm Order
               </button>
             </div>
@@ -890,12 +910,13 @@ function Home() {
                     <div className='card card-product '>
                       <div className='card-body text-center  py-8'>
                         <img
-                          src={category.src}
-                          alt='Grocery Ecommerce Template'
-                          className='mb-3'
+                          src={`http://localhost:5002/productUploads/${category.src}`}
+                          alt="Grocery Ecommerce Template"
+                          className="mb-3 img-prod-exp"
                         />
                         <div className='text-truncate'>{category.name}</div>
                       </div>
+                      
                     </div>
                   </a>
                 ))}
@@ -967,12 +988,10 @@ function Home() {
             </div>
             <div className='row g-4 row-cols-lg-5 row-cols-2 row-cols-md-3'>
               {allProducts?.map((product, index) => {
-                const expirationDate = new Date(
-                  product.expirationDate
-                ).getTime(); // get expiration date in milliseconds
+                const expirationDate = new Date(product.expirationDate).getTime(); // get expiration date in milliseconds
                 const now = new Date().getTime(); // get current time in milliseconds
                 const distance = expirationDate - now; // calculate the time remaining in milliseconds
-
+              
                 // calculate days, hours, minutes, and seconds remaining
                 let days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 let hours = Math.floor(
@@ -1005,6 +1024,7 @@ function Home() {
                   document.querySelector(
                     `#countdown-${index} .minutes`
                   ).textContent = minutes;
+
                 }, 1000);
                 return (
                   <div className='col' key={index}>
@@ -1027,15 +1047,17 @@ function Home() {
                               src={`http://localhost:5002/productUploads/${product.image}`}
                               alt='Grocery Ecommerce Template'
                               className='mb-3 img-fluid img-prod'
+
                             />
                           </a>
                           {/* action */}
                           <div className='card-product-action'>
                             <a
-                              href='#!'
+              href='#!'
                               className='btn-action'
                               data-bs-toggle='modal'
                               data-bs-target='#quickViewModal'
+
                             >
                               <i
                                 className='bi bi-eye'
@@ -1181,7 +1203,8 @@ function Home() {
                   <div
                     className=' pt-8 px-6 px-xl-8 rounded'
                     style={{
-                      background: "url(assets/images/auth/food9.jpg)no-repeat",
+                      background:
+                        "url(assets/images/auth/food9.jpg)no-repeat",
                       backgroundSize: "cover",
                       height: "470px",
                     }}
@@ -1536,61 +1559,6 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className='my-lg-14 my-8'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-md-6 col-lg-3'>
-                <div className='mb-8 mb-xl-0'>
-                  <div className='mb-6'>
-                    <img src='assets/images/icons/clock.svg' alt='' />
-                  </div>
-                  <h3 className='h5 mb-3'>10 minute grocery now</h3>
-                  <p>
-                    Get your order delivered to your doorstep at the earliest
-                    from EcoWaste pickup stores near you.
-                  </p>
-                </div>
-              </div>
-              <div className='col-md-6  col-lg-3'>
-                <div className='mb-8 mb-xl-0'>
-                  <div className='mb-6'>
-                    <img src='assets/images/icons/gift.svg' alt='' />
-                  </div>
-                  <h3 className='h5 mb-3'>Best Prices & Offers</h3>
-                  <p>
-                    Cheaper prices than your local supermarket, great cashback
-                    offers to top it off. Get best pricess & offers.
-                  </p>
-                </div>
-              </div>
-              <div className='col-md-6 col-lg-3'>
-                <div className='mb-8 mb-xl-0'>
-                  <div className='mb-6'>
-                    <img src='assets/images/icons/package.svg' alt='' />
-                  </div>
-                  <h3 className='h5 mb-3'>Wide Assortment</h3>
-                  <p>
-                    Choose from 5000+ products across food, personal care,
-                    household, bakery, veg and non-veg & other categories.
-                  </p>
-                </div>
-              </div>
-              <div className='col-md-6 col-lg-3'>
-                <div className='mb-8 mb-xl-0'>
-                  <div className='mb-6'>
-                    <img src='assets/images/icons/refresh-cw.svg' alt='' />
-                  </div>
-                  <h3 className='h5 mb-3'>Easy Returns</h3>
-                  <p>
-                    Not satisfied with a product? Return it at the doorstep &
-                    get a refund within hours. No questions asked
-                    <a href='#!'>policy</a>.
-                  </p>
                 </div>
               </div>
             </div>
