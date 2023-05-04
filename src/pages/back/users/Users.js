@@ -6,28 +6,25 @@ import { notify } from "../../../utils/HelperFunction";
 
 const Users = (props) => {
   const [allUsers, setAllUsers] = useState([]);
-  const [searchQueryByUsername, setSearchQueryByUsername] = useState("");
-  const [seeMore, setSeeMore] = useState(3);
+  //search
+  const [searchQuery, setSearchQuery] = useState("");
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
+  function handleItemsPerPageChange(event) {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  }
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
 
   useEffect(() => {
-    const searchObject = { username: searchQueryByUsername };
-    if (searchQueryByUsername?.length > 0) {
-      console.log("here");
-      axios
-        .post("/api/auth/searchUserByUsername", searchObject)
-        .then((res) => {
-          setAllUsers(res.data);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      axios.get("/api/auth/getAllUsers").then((res) => {
-        setAllUsers(res.data);
-      });
-    }
-  }, [searchQueryByUsername]);
-  const handleSeeMore = () => {
-    setSeeMore((prevState) => prevState + 5);
-  };
+    axios.get("/api/auth/getAllUsers").then((res) => {
+      setAllUsers(res.data);
+    });
+  }, []);
 
   const makeTechnical = (id) => {
     axios
@@ -82,10 +79,8 @@ const Users = (props) => {
                           type="search"
                           placeholder="Search Customers"
                           aria-label="Search"
-                          value={searchQueryByUsername}
-                          onChange={(e) =>
-                            setSearchQueryByUsername(e.target.value)
-                          }
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
                         />
                       </form>
                     </div>
@@ -93,7 +88,7 @@ const Users = (props) => {
                 </div>
                 <div className="card-body p-0 ">
                   <div className="table-responsive">
-                    <table className="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                    <table className="table table-centered table-hover table-borderless mb-0 ">
                       <thead className="bg-light">
                         <tr>
                           <th className="column ">Full Name</th>
@@ -104,24 +99,32 @@ const Users = (props) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {allUsers?.slice(0, seeMore).map((user, index) => {
-                          return (
-                            <tr key={index}>
-                              <td className="column">
-                                <div className="d-flex align-items-center">
-                                  <img
-                                    src={`http://localhost:5001/uploads/${user?.image}`}
-                                    alt=""
-                                    className="avatar avatar-xs rounded-circle"
-                                  />
-                                  <div className="ms-2">
-                                    <a href="#" className="text-inherit">
-                                      {user.username}
-                                    </a>
+                        {allUsers
+                          ?.filter((user) =>
+                            Object.values(user)
+                              .join(" ")
+                              .toLowerCase()
+                              .includes(searchQuery)
+                          )
+                          .slice(startIndex, endIndex)
+                          .map((user, index) => {
+                            return (
+                              <tr key={index}>
+                                <td className="column">
+                                  <div className="d-flex align-items-center">
+                                    <img
+                                      src={`http://localhost:5001/uploads/${user?.image}`}
+                                      alt=""
+                                      className="avatar avatar-xs rounded-circle"
+                                    />
+                                    <div className="ms-2">
+                                      <a href="#" className="text-inherit">
+                                        {user.username}
+                                      </a>
+                                    </div>
                                   </div>
-                                </div>
-                              </td>
-                              <td className="column disposable">{user.email}</td>
+                                </td>
+                                <td className="column disposable">{user.email}</td>
                               <td className="column disposable disposable2">
                                 {user?.verified ? "Verified" : "Not Verified"}
                               </td>
@@ -163,7 +166,7 @@ const Users = (props) => {
                                           {user?.verified ? "Verified" : "Not Verified"}
                                         </a>
                                       </li>
-                                      <li className="line eye-field eye-field2">
+                                      <li style={{borderBottom:"none"}} className="line eye-field eye-field2">
                                         <a className="dropdown-item">
                                           <span className="">Phone :</span>
                                           {user.phoneNumber}
@@ -171,54 +174,139 @@ const Users = (props) => {
                                       </li>
                                     </ul>
                                   </div>
-                                <div className="dropdown">
-                                  <a
-                                    href="#"
-                                    className="text-reset"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    <i className="feather-icon icon-more-vertical fs-5" />
-                                  </a>
-                                  <ul className="dropdown-menu">
-                                    <li>
-                                      <span
-                                        className="dropdown-item"
-                                        onClick={() => makeTechnical(user._id)}
-                                      >
-                                        Technical
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <span
-                                        className="dropdown-item"
-                                        onClick={() => makeManager(user._id)}
-                                      >
-                                        Manager
-                                      </span>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
+                                  <div className="dropdown">
+                                    <a
+                                      href="#"
+                                      className="text-reset"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="feather-icon icon-more-vertical fs-5" />
+                                    </a>
+                                    <ul className="dropdown-menu">
+                                      <li>
+                                        <span
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            makeTechnical(user._id)
+                                          }
+                                        >
+                                          Technical
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span
+                                          className="dropdown-item"
+                                          onClick={() => makeManager(user._id)}
+                                        >
+                                          Manager
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td colSpan="10">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                Showing{" "}
+                                {Math.min(itemsPerPage, allUsers.length)} of{" "}
+                                {allUsers.length} products
+                              </div>
+                              <div>
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <label htmlFor="items-per-page">
+                                    Items per page:
+                                  </label>
+
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    id="items-per-page"
+                                    value={itemsPerPage}
+                                    onChange={handleItemsPerPageChange}
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <nav aria-label="Page navigation">
+                                  <ul className="pagination">
+                                    {startIndex > 1 && (
+                                      <li className="page-item ">
+                                        <a
+                                          className="page-link "
+                                          onClick={() =>
+                                            setCurrentPage(currentPage - 1)
+                                          }
+                                        >
+                                          Previous
+                                        </a>
+                                      </li>
+                                    )}
+                                    {currentPage === 1 && (
+                                      <li className="page-item disabled">
+                                        <a className="page-link ">Previous</a>
+                                      </li>
+                                    )}
+                                    {Array.from(
+                                      {
+                                        length: Math.ceil(
+                                          allUsers.length / itemsPerPage
+                                        ),
+                                      },
+                                      (_, i) => (
+                                        <li
+                                          key={i}
+                                          className={`page-item ${
+                                            i + 1 === currentPage
+                                              ? "active"
+                                              : ""
+                                          }`}
+                                          onClick={() => setCurrentPage(i + 1)}
+                                        >
+                                          <span className="page-link">
+                                            {i + 1}
+                                          </span>
+                                        </li>
+                                      )
+                                    )}
+                                    {endIndex < allUsers.length && (
+                                      <li className="page-item">
+                                        <a
+                                          className="page-link"
+                                          onClick={() =>
+                                            setCurrentPage(currentPage + 1)
+                                          }
+                                        >
+                                          Next
+                                        </a>
+                                      </li>
+                                    )}
+                                    {endIndex >= allUsers.length && (
+                                      <li className="page-item disabled">
+                                        <a
+                                          className="page-link"
+                                          onClick={() =>
+                                            setCurrentPage(currentPage + 1)
+                                          }
+                                        >
+                                          Next
+                                        </a>
+                                      </li>
+                                    )}
+                                  </ul>
+                                </nav>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </tfoot>
                     </table>
-                  </div>
-                  <div className="border-top d-md-flex justify-content-between align-items-center p-6">
-                    <span>Users: {allUsers.length}</span>
-                    {allUsers.length > seeMore && (
-                      <nav className="mt-2 mt-md-0">
-                        <ul className="pagination mb-0 ">
-                          <li className="page-item">
-                            <span className="page-link" onClick={handleSeeMore}>
-                              More
-                            </span>
-                          </li>
-                        </ul>
-                      </nav>
-                    )}
                   </div>
                 </div>
               </div>
