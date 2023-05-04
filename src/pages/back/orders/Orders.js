@@ -114,7 +114,7 @@ const Orders = () => {
                                 {order.totalAmount} DT
                               </td>
                               <td
-                                className="column "
+                                className="column justify-content-center"
                                 style={{
                                   display: "flex",
                                   alignItems: "center",

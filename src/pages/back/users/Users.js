@@ -1,3 +1,4 @@
+import "./user.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -87,14 +88,14 @@ const Users = (props) => {
                 </div>
                 <div className="card-body p-0 ">
                   <div className="table-responsive">
-                    <table className="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
+                    <table className="table table-centered table-hover table-borderless mb-0 ">
                       <thead className="bg-light">
                         <tr>
-                          <th>Full Name</th>
-                          <th>Email</th>
-                          <th>Verified</th>
-                          <th>Phone</th>
-                          <th>Change role</th>
+                          <th className="column ">Full Name</th>
+                          <th className="column disposable">Email</th>
+                          <th className="column disposable disposable2">Verified</th>
+                          <th className="column disposable disposable2">Phone</th>
+                          <th className="column ">Change role(default User)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -109,7 +110,7 @@ const Users = (props) => {
                           .map((user, index) => {
                             return (
                               <tr key={index}>
-                                <td>
+                                <td className="column">
                                   <div className="d-flex align-items-center">
                                     <img
                                       src={`http://localhost:5001/uploads/${user?.image}`}
@@ -123,12 +124,56 @@ const Users = (props) => {
                                     </div>
                                   </div>
                                 </td>
-                                <td>{user.email}</td>
-                                <td>
-                                  {user?.verified ? "Verified" : "Not Verified"}
-                                </td>
-                                <td>{user.phoneNumber}</td>
-                                <td>
+                                <td className="column disposable">{user.email}</td>
+                              <td className="column disposable disposable2">
+                                {user?.verified ? "Verified" : "Not Verified"}
+                              </td>
+                              <td className="column disposable disposable2">{user.phoneNumber}</td>
+                              <td className="column justify-content-center"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    lineHeight: "3.1rem",
+                                  }}
+                                >
+                                  <div className="dropdown eye-field2">
+                                    <a
+                                      href="#"
+                                      className="text-reset"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="feather-icon icon-eye fs-5" />
+                                    </a>
+                                    <ul className="dropdown-menu dropdownForcedAttributes" >
+                                      <li className="line eye-field">
+                                        <a className="dropdown-item">
+                                          <span className="">Full Name :</span>#
+                                          {user.username}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field ">
+                                        <a className="dropdown-item">
+                                          <span className="">Email :</span>
+                                          {user.email}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a
+                                          className="dropdown-item"
+                                        >
+                                          <span className="">Verified :</span>
+                                          {user?.verified ? "Verified" : "Not Verified"}
+                                        </a>
+                                      </li>
+                                      <li style={{borderBottom:"none"}} className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">Phone :</span>
+                                          {user.phoneNumber}
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
                                   <div className="dropdown">
                                     <a
                                       href="#"
