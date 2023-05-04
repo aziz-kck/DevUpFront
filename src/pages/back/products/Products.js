@@ -237,7 +237,7 @@ const Products = (props) => {
                                   ).toLocaleDateString()}
                                 </td>
                                 <td
-                                  className="column "
+                                  className="column justify-content-center"
                                   style={{
                                     display: "flex",
                                     alignItems: "center",

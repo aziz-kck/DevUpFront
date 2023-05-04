@@ -124,7 +124,7 @@ const Coupons = (props) => {
                           <th className="column disposable disposable2">
                             Used Times
                           </th>
-                          <th className="column disposable">Expiration Date</th>
+                          <th className="column disposable disposable2">Expiration Date</th>
                           <th className="column disposable disposable2">
                             Update Date
                           </th>
@@ -165,7 +165,7 @@ const Coupons = (props) => {
                                   ).toLocaleDateString()}
                                 </td>
                                 <td
-                                  className="column "
+                                  className="column justify-content-center"
                                   style={{
                                     display: "flex",
                                     alignItems: "center",

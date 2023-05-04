@@ -1,3 +1,4 @@
+import "./user.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -95,46 +96,18 @@ const Users = (props) => {
                     <table className="table table-centered table-hover table-borderless mb-0 table-with-checkbox text-nowrap">
                       <thead className="bg-light">
                         <tr>
-                          <th>
-                            <div className="form-check">
-                              <input
-                                className="form-check-input"
-                                type="checkbox"
-                                defaultValue
-                                id="checkAll"
-                              />
-                              <label
-                                className="form-check-label"
-                                htmlFor="checkAll"
-                              ></label>
-                            </div>
-                          </th>
-                          <th>Full Name</th>
-                          <th>Email</th>
-                          <th>Verified</th>
-                          <th>Phone</th>
-                          <th>Change role(default User)</th>
+                          <th className="column ">Full Name</th>
+                          <th className="column disposable">Email</th>
+                          <th className="column disposable disposable2">Verified</th>
+                          <th className="column disposable disposable2">Phone</th>
+                          <th className="column ">Change role(default User)</th>
                         </tr>
                       </thead>
                       <tbody>
                         {allUsers?.slice(0, seeMore).map((user, index) => {
                           return (
                             <tr key={index}>
-                              <td>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    defaultValue
-                                    id="customerOne"
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    htmlFor="customerOne"
-                                  ></label>
-                                </div>
-                              </td>
-                              <td>
+                              <td className="column">
                                 <div className="d-flex align-items-center">
                                   <img
                                     src={`http://localhost:5001/uploads/${user?.image}`}
@@ -148,12 +121,56 @@ const Users = (props) => {
                                   </div>
                                 </div>
                               </td>
-                              <td>{user.email}</td>
-                              <td>
+                              <td className="column disposable">{user.email}</td>
+                              <td className="column disposable disposable2">
                                 {user?.verified ? "Verified" : "Not Verified"}
                               </td>
-                              <td>{user.phoneNumber}</td>
-                              <td>
+                              <td className="column disposable disposable2">{user.phoneNumber}</td>
+                              <td className="column justify-content-center"
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    lineHeight: "3.1rem",
+                                  }}
+                                >
+                                  <div className="dropdown eye-field2">
+                                    <a
+                                      href="#"
+                                      className="text-reset"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      <i className="feather-icon icon-eye fs-5" />
+                                    </a>
+                                    <ul className="dropdown-menu dropdownForcedAttributes" >
+                                      <li className="line eye-field">
+                                        <a className="dropdown-item">
+                                          <span className="">Full Name :</span>#
+                                          {user.username}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field ">
+                                        <a className="dropdown-item">
+                                          <span className="">Email :</span>
+                                          {user.email}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a
+                                          className="dropdown-item"
+                                        >
+                                          <span className="">Verified :</span>
+                                          {user?.verified ? "Verified" : "Not Verified"}
+                                        </a>
+                                      </li>
+                                      <li className="line eye-field eye-field2">
+                                        <a className="dropdown-item">
+                                          <span className="">Phone :</span>
+                                          {user.phoneNumber}
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
                                 <div className="dropdown">
                                   <a
                                     href="#"
