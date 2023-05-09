@@ -414,12 +414,11 @@ function Navbar() {
             <div className='d-none d-lg-block'>
               <ul className='navbar-nav align-items-center '>
               <Link to='/home'>
-                <li className='nav-item dropdown'>
+                <li className='nav-item '>
                   <a
                     className='nav-link'
                      
                     role='button'
-                    data-bs-toggle='dropdown'
                     aria-expanded='false'
                   >
                     Home
