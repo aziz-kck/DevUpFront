@@ -155,6 +155,32 @@ const Categories = (props) => {
                                     >
                                       <i class="feather-icon icon-more-vertical" />
                                     </a>
+                                    <ul className="dropdown-menu">
+                                      <li>
+                                        <a
+                                          style={{ cursor: "pointer" }}
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            deleteCategory(category._id)
+                                          }
+                                        >
+                                          <i className="bi bi-trash me-3" />
+                                          Delete
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a
+                                          style={{ cursor: "pointer" }}
+                                          className="dropdown-item"
+                                          onClick={() =>
+                                            editCategory(category._id)
+                                          }
+                                        >
+                                          <i className="bi bi-pencil-square me-3 " />
+                                          Edit
+                                        </a>
+                                      </li>
+                                    </ul>
                                   </div>
                                 </td>
                               </tr>

@@ -265,12 +265,12 @@ function Navbar() {
                       <small>{currentUser?.email}</small>
                     </div>
                     <ul className='list-unstyled px-2 py-3'>
-                    <Link to='/home'>
+                    
                       <li>
-                        <a className='dropdown-item'>Home</a>
+                        <a className=''><Link to='/home'>Home</Link></a>
                       </li>
 
-                      </Link>
+                      
                       <li>
                         <a className='dropdown-item'>Profile</a>
                       </li>
