@@ -423,18 +423,18 @@ function Home() {
 
   const introductions = [
     {
-      imageUrl: "assets/images/slider/r7.jpg",
+      imageUrl: "assets/images/slider/slide-1.jpg",
       "first-comment": "Opening Sale Discount 50%",
-      "second-comment": "SuperMarket For Fresh Grocery",
+      "second-comment": "Welcome to Ecowaste",
       "third-comment": "",
       "fourth-comment":
-        "Introduced a new model for online grocery shopping and convenient home delivery.",
+        "It's all about good food and a better environment.",
       "fifth-comment": "Shop Now",
     },
     {
       imageUrl: "assets/images/slider/r8.jpg",
       "first-comment": "Free Shipping - orders over $100",
-      "second-comment": "Free Shipping on orders over ",
+      "second-comment": "it's all about good food ",
       "third-comment": " $100",
       "fourth-comment":
         "Free Shipping to First-Time Customers Only, After promotions and discounts are applied.",

@@ -1,0 +1,12 @@
+.styleFooter{
+    padding: 0px 0px 0px 22%;
+    height: 118px;
+    margin: 0px 0px;
+}
+
+
+@media (max-width: 1200px) {
+    .styleFooter{
+        padding: 0px;
+    }
+}
