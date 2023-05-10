@@ -948,7 +948,42 @@ function Home() {
             </div>
             <div className='category-slider'>
               <Slider className='silder-feature' {...settings_feature}>
-                {categories.map((category, index) => (
+                {categories.map((category, index) => {
+                  const expirationDate = new Date(
+                    category.expirationDate
+                  ).getTime(); // get expiration date in milliseconds
+                  const now = new Date().getTime(); // get current time in milliseconds
+                  const distance = expirationDate - now; // calculate the time remaining in milliseconds
+  
+                  // calculate days, hours, minutes, and seconds remaining
+                  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                  let hours = Math.floor(
+                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                  );
+                  let minutes = Math.floor(
+                    (distance % (1000 * 60 * 60)) / (1000 * 60)
+                  );
+  
+                  // update the countdown every second
+                  
+  
+                    
+  
+                    // update the countdown timer display
+                    const countdownElement = document.getElementById(`countdown-${index}`);
+                    if (countdownElement !== null) {
+                      const daysElement = countdownElement.getElementsByClassName('days')[0];
+                      const hoursElement = countdownElement.getElementsByClassName('hours')[0];
+                      const minutesElement = countdownElement.getElementsByClassName('minutes')[0];
+  
+                      if (daysElement && hoursElement && minutesElement) {
+                        daysElement.innerHTML = days;
+                        hoursElement.innerHTML = hours;
+                        minutesElement.innerHTML = minutes;
+                      }
+                    }
+                  
+                  return(
                   <a
                     href='pages/shop-grid.html'
                     className='text-decoration-none text-inherit'
@@ -963,11 +998,36 @@ function Home() {
                           style={{height:"132px"}}
                         />
                         <div className='text-truncate'>{category.name}</div>
+                        <div class='d-flex justify-content-start text-center mt-3'>
+                          <div
+                            class='deals-countdown w-100'
+                            id={`countdown-${index}`}
+                          >
+                            <span class='countdown-section'>
+                              <span class='countdown-amount hover-up days'>
+                                {days}
+                              </span>
+                              <span class='countdown-period'> days </span>
+                            </span>
+                            <span class='countdown-section'>
+                              <span class='countdown-amount hover-up hours'>
+                                {hours}
+                              </span>
+                              <span class='countdown-period'> hours </span>
+                            </span>
+                            <span class='countdown-section'>
+                              <span class='countdown-amount hover-up minutes'>
+                                {minutes}
+                              </span>
+                              <span class='countdown-period'> mins </span>
+                            </span>
+                          </div>
+                        </div>
                       </div>
                       
                     </div>
                   </a>
-                ))}
+                )})}
               </Slider>
             </div>
           </div>
@@ -1064,16 +1124,21 @@ function Home() {
                     (distance % (1000 * 60 * 60)) / (1000 * 60)
                   );
 
+                  
+
                   // update the countdown timer display
-                  document.querySelector(
-                    `#countdown-${index} .days`
-                  ).textContent = days;
-                  document.querySelector(
-                    `#countdown-${index} .hours`
-                  ).textContent = hours;
-                  document.querySelector(
-                    `#countdown-${index} .minutes`
-                  ).textContent = minutes;
+                  const countdownElement = document.getElementById(`countdown-${index}`);
+                  if (countdownElement !== null) {
+                    const daysElement = countdownElement.getElementsByClassName('days')[0];
+                    const hoursElement = countdownElement.getElementsByClassName('hours')[0];
+                    const minutesElement = countdownElement.getElementsByClassName('minutes')[0];
+
+                    if (daysElement && hoursElement && minutesElement) {
+                      daysElement.innerHTML = days;
+                      hoursElement.innerHTML = hours;
+                      minutesElement.innerHTML = minutes;
+                    }
+                  }
                 }, 1000);
                 return (
                   <div className='col' key={index}>
