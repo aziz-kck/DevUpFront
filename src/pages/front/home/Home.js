@@ -939,7 +939,7 @@ function Home() {
           </div>
         </section>
 
-        <section className='mb-lg-10 mt-lg-14 my-8'>
+        {/*<section className='mb-lg-10 mt-lg-14 my-8'>
           <div className='container'>
             <div className='row'>
               <div className='col-12 mb-6'>
@@ -1031,10 +1031,10 @@ function Home() {
               </Slider>
             </div>
           </div>
-        </section>
+        </section>*/}
 
         <section>
-          <div className='container'>
+          <div className='container' style={{marginTop: "80px"}}>
             <div className='row'>
               <div className='col-12 col-md-6 mb-3 mb-lg-0'>
                 <div>
@@ -1123,9 +1123,6 @@ function Home() {
                   minutes = Math.floor(
                     (distance % (1000 * 60 * 60)) / (1000 * 60)
                   );
-
-                  
-
                   // update the countdown timer display
                   const countdownElement = document.getElementById(`countdown-${index}`);
                   if (countdownElement !== null) {
