@@ -1,0 +1,9 @@
+.paymentContainer{
+    border: 1px solid rgb(76, 196, 36);
+    border-radius: 10px;
+    width: 60%;
+    height: 64%;
+    margin: 8% auto;
+    background-color: #fbfbfb;
+    padding: 2%;
+}
