@@ -12,6 +12,7 @@ export default function CheckoutForm() {
   const elements = useElements();
 
   const [message, setMessage] = useState(null);
+  const [succesMessage, setSuccesMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -26,19 +27,23 @@ export default function CheckoutForm() {
     setIsProcessing(true);
 
     const { error } = await stripe.confirmPayment({
-      
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: `${window.location.origin}/home`,
-
+        return_url: window.location.href, // Use the current page URL as the return_url
       },
     });
-
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
+  
+    if (error) {
+      if (error.type === "card_error" || error.type === "validation_error") {
+        setMessage(error.message);
+        setSuccesMessage(null);
+      } else {
+        setMessage("An unexpected error occurred.");
+        setSuccesMessage(null);
+      }
     } else {
-      setMessage("An unexpected error occured.");
+      setSuccesMessage("Payment successful!");
+      setMessage(null);
     }
 
     setIsProcessing(false);
@@ -59,11 +64,12 @@ export default function CheckoutForm() {
         display: "block",
         }} disabled={isProcessing || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isProcessing ? "Processing ... " : "Pay now"}
+          Pay now
         </span>
       </button>
       {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
+      {succesMessage && <div style={{color:"green"}} id="payment-message">{succesMessage}</div>}
     </form>
   );
 }

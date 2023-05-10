@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import Payment from "./Payment";
+import PaymentModel from "./modal/PaymentModel";
 
 const OrdersList = () => {
   const [allOrders, setAllOrders] = useState([]);
   const { user: currentUser } = useSelector((state) => state.auth);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [ShowPaymentModal, setShowPaymentModal] = useState(false);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   useEffect(() => {
@@ -25,8 +27,22 @@ const OrdersList = () => {
         console.log(error);
       });
   }, [currentUser.id]);
+
+  const handleShowPayment = () => {
+    setShowPaymentModal(true);
+  };
+  const handleConfirmDelete = () => {
+    setShowPaymentModal(false);
+  };
+
   return (
     <div className="container mt-8">
+      <PaymentModel
+        message="Are you sure you want to delete this item?"
+        show={ShowPaymentModal}
+        onHide={() => setShowPaymentModal(false)}
+        onConfirm={handleConfirmDelete}
+      />
       <div className="table-responsive-xxl border-0">
         {/* Table */}
         <table className="table mb-0 text-nowrap table-centered ">
@@ -82,20 +98,30 @@ const OrdersList = () => {
                       >
                         <i className="feather-icon icon-eye" />
                       </a>
-                      </Link>
-                      <span
-                        style={{ marginLeft: "20px", marginRight: "-20px" }}
-                        className="dropdown btn btn-primary btn-sm"
+                    </Link>
+                    <span
+                      style={{ marginLeft: "20px", marginRight: "-20px" }}
+                      className="dropdown btn btn-primary btn-sm"
+                    >
+                      <i
+                        style={{ marginRight: "6px" }}
+                        class="bi bi-credit-card-fill"
+                      ></i>{" "}
+                      <a
+                        onClick={() => handleShowPayment()}
                       >
-                        <i
-                          style={{ marginRight: "6px" }}
-                          class="bi bi-credit-card-fill"
-                        ></i>{" "}
-                        <a data-bs-toggle="dropdown">Pay</a>
-                        <div style={{    border:" 1px solid rgb(76, 196, 36)",borderRadius: "10px"}} className="dropdown-menu dropdownForcedAttributes">
-                          <Payment></Payment>
-                        </div>
-                      </span>
+                        Pay
+                      </a>
+                      {/*<div
+                        style={{
+                          border: " 1px solid rgb(76, 196, 36)",
+                          borderRadius: "10px",
+                        }}
+                        className="dropdown-menu dropdownForcedAttributes"
+                      >
+                        <Payment></Payment>
+                      </div>*/}
+                    </span>
                   </td>
                 </tr>
               );
