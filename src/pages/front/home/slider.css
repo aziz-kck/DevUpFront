@@ -23,9 +23,13 @@
 }
 
 .slider-intro .slick-list {
-  height: 606px;
+  height: 500px;
 }
 
 .intro {
   margin: 0px 12px;
+}
+
+.slick-list{
+  height: 300px;
 }
