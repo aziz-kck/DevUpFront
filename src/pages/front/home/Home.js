@@ -88,7 +88,9 @@ function Home() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  },[]);
+
+
   const [
     allRecommendedProductsFromViewedList,
     setAllRecommendedProductsFromViewedList,
@@ -956,11 +958,13 @@ function Home() {
                       <div className='card-body text-center  py-8'>
                         <img
                           src={`http://localhost:5002/productUploads/${category.src}`}
-                          alt='Grocery Ecommerce Template'
-                          className='mb-3 img-prod-exp'
+                          alt="Grocery Ecommerce Template"
+                          className="mb-3 img-prod-exp"
+                          style={{height:"132px"}}
                         />
                         <div className='text-truncate'>{category.name}</div>
                       </div>
+                      
                     </div>
                   </a>
                 ))}
